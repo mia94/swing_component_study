@@ -17,10 +17,15 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
+import javax.swing.JSlider;
 
 public class MenuAndFileDialogEx extends JFrame implements ActionListener {
 
@@ -28,6 +33,9 @@ public class MenuAndFileDialogEx extends JFrame implements ActionListener {
 	private JMenuItem mntmOpen;
 	private JLabel lblImage;
 	private JMenuItem mntmSave;
+	private JMenuItem mntmFileOpen;
+	private JPanel panel;
+	private JSlider slider;
 
 
 	/**
@@ -53,16 +61,32 @@ public class MenuAndFileDialogEx extends JFrame implements ActionListener {
 		mntmSave = new JMenuItem("Save");
 		mntmSave.addActionListener(this);
 		mnNewMenu.add(mntmSave);
+		
+		mntmFileOpen = new JMenuItem("FileOpen");
+		mntmFileOpen.addActionListener(this);
+		mnNewMenu.add(mntmFileOpen);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new GridLayout(0, 1, 0, 0));
+		contentPane.setLayout(new BorderLayout(0, 0));
 		
 		lblImage = new JLabel("");
-		contentPane.add(lblImage);
+		contentPane.add(lblImage, BorderLayout.CENTER);
+		
+		panel = new JPanel();
+		contentPane.add(panel, BorderLayout.SOUTH);
+		
+		slider = new JSlider();
+		slider.setSnapToTicks(true);
+		slider.setPaintTicks(true);
+		slider.setPaintLabels(true);
+		panel.add(slider);
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == mntmFileOpen) {
+			do_mntmRead_actionPerformed(e);
+		}
 		if (e.getSource() == mntmSave) {
 			do_mntmSave_actionPerformed(e);
 		}
@@ -113,6 +137,29 @@ public class MenuAndFileDialogEx extends JFrame implements ActionListener {
 			e1.printStackTrace();
 		}
 		JOptionPane.showMessageDialog(null, "저장완료");
+	}
+	protected void do_mntmRead_actionPerformed(ActionEvent e) {
+		String currentDirectoryPath = System.getProperty("user.dir") + "\\backup";
+		JFileChooser chooser = new JFileChooser(currentDirectoryPath);
+		
+		int ret = chooser.showOpenDialog(null);
+		System.out.println("ret : "+ret);
+		if(ret != JFileChooser.APPROVE_OPTION) {
+			JOptionPane.showMessageDialog(null, "파일을 선택하지 않았습니다.", "경고", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		
+		String filePath = chooser.getSelectedFile().getPath();
+
+		try(BufferedReader br = new BufferedReader(new FileReader(filePath))){
+			String line = br.readLine();
+			lblImage.setText(line);
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
 	}
 }
 
