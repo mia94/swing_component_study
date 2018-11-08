@@ -25,6 +25,7 @@ public class JComponentMain extends JFrame implements ActionListener {
 	private JButton btn6;
 	private JButton btn7;
 	private JButton btn8;
+	private JButton btn9;
 
 	/**
 	 * Launch the application.
@@ -88,9 +89,16 @@ public class JComponentMain extends JFrame implements ActionListener {
 		btn8 = new JButton("JSilderEx");
 		btn8.addActionListener(this);
 		contentPane.add(btn8);
+		
+		btn9 = new JButton("JOptionPane");
+		btn9.addActionListener(this);
+		contentPane.add(btn9);
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btn9) {
+			do_btn9_actionPerformed(e);
+		}
 		if (e.getSource() == btn8) {
 			do_btn8_actionPerformed(e);
 		}
@@ -145,9 +153,13 @@ public class JComponentMain extends JFrame implements ActionListener {
 	protected void do_btn8_actionPerformed(ActionEvent e) {
 		showFrame(new JSliderChangeEx());
 	}
+	protected void do_btn9_actionPerformed(ActionEvent e) {
+		showFrame(new JOptionPaneEx());
+	}
 	//화면을 띄어주는 메소드 생성
 	private void showFrame(JFrame frame) {
 		frame.setVisible(true);
 	}
+	
 	
 }

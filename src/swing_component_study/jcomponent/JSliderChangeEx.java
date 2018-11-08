@@ -13,11 +13,18 @@ import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.Color;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerListModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SpinnerDateModel;
+import java.util.Date;
+import java.util.Calendar;
 
 public class JSliderChangeEx extends JFrame implements ActionListener, ChangeListener {
 
@@ -32,6 +39,12 @@ public class JSliderChangeEx extends JFrame implements ActionListener, ChangeLis
 	private int value_R;
 	private int value_G;
 	private int value_B;
+	private JPanel pSpinner;
+	private JSpinner spList;
+	private JSpinner spNumber;
+	private JSpinner spDate;
+	private JButton btnNewButton;
+	private JPanel panel_1;
 
 	/**
 	 * Create the frame.
@@ -46,7 +59,7 @@ public class JSliderChangeEx extends JFrame implements ActionListener, ChangeLis
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new GridLayout(0, 2, 0, 0));
+		contentPane.setLayout(new GridLayout(0, 3, 0, 0));
 		
 		JPanel pBasicSlider = new JPanel();
 		pBasicSlider.setBorder(new TitledBorder(null, "\uC2AC\uB77C\uC774\uB354 \uCEF4\uD3EC\uB10C\uD2B8", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -114,9 +127,42 @@ public class JSliderChangeEx extends JFrame implements ActionListener, ChangeLis
 //		lblColor.setBackground(new Color(value_R,value_G,value_B));
 		pAdvenceSlider.add(lblColor);
 		
+		
+		pSpinner = new JPanel();
+		contentPane.add(pSpinner);
+		pSpinner.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		panel_1 = new JPanel();
+		pSpinner.add(panel_1);
+		
+		spList = new JSpinner();
+		spList.setModel(new SpinnerListModel(new String[] {"\uC18C\uC124", "\uC7A1\uC9C0", "\uC804\uACF5\uC11C\uC801", "\uCDE8\uBBF8"}));
+		panel_1.add(spList);
+		
+		spNumber = new JSpinner();
+		spNumber.setModel(new SpinnerNumberModel(0, 0, 9, 1));
+		panel_1.add(spNumber);
+		
+		//
+		Calendar calendar = Calendar.getInstance();
+		Date valDate = calendar.getTime();
+		calendar.add(Calendar.YEAR,-50);
+		Date start = calendar.getTime();
+		calendar.add(Calendar.YEAR, 100);
+		Date end = calendar.getTime();
+		spDate = new JSpinner();
+		spDate.setModel(new SpinnerDateModel(new Date(1541602800000L), start, end, Calendar.YEAR));
+		panel_1.add(spDate);
+		
+		btnNewButton = new JButton("New button");
+		btnNewButton.addActionListener(this);
+		pSpinner.add(btnNewButton);
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnNewButton) {
+			do_btnNewButton_actionPerformed(e);
+		}
 		if (e.getSource() == btnOk) {
 			do_btnOk_actionPerformed(e);
 		}
@@ -148,15 +194,26 @@ public class JSliderChangeEx extends JFrame implements ActionListener, ChangeLis
 		value_R = slider_R.getValue();
 		lblColor.setBackground(new Color(value_R,value_G,value_B));
 		lblColor.setText("r:"+ value_R+"g: "+value_G+"b:"+value_B);
+		lblColor.setForeground(new Color(255-value_G, 255-value_G, 255-value_B));
 	}
 	protected void do_slider_G_stateChanged(ChangeEvent e) {
 		value_G = slider_G.getValue();
 		lblColor.setBackground(new Color(value_R,value_G,value_B));
 		lblColor.setText("r:"+ value_R+"g: "+value_G+"b:"+value_B);
+		lblColor.setForeground(new Color(255-value_G, 255-value_G, 255-value_B));
 	}
 	protected void do_slider_B_stateChanged(ChangeEvent e) {
 		value_B = slider_B.getValue();
 		lblColor.setBackground(new Color(value_R,value_G,value_B));
 		lblColor.setText("r:"+ value_R+"g: "+value_G+"b:"+value_B);
+		lblColor.setForeground(new Color(255-value_G, 255-value_G, 255-value_B));
+	}
+	protected void do_btnNewButton_actionPerformed(ActionEvent e) {
+		String strVal = (String) spList.getValue();
+		int intVal = (int)spNumber.getValue();
+		Date dateVal = (Date)spDate.getValue();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		
+		JOptionPane.showMessageDialog(null, strVal+" , " + intVal+" , " + sdf.format(dateVal));
 	}
 }
