@@ -67,7 +67,7 @@ public class JOptionPaneEx extends JFrame implements ActionListener {
 		btn1 = new JButton("Input");
 		panel.add(btn1);
 		
-		JButton btn2 = new JButton("New button");
+		JButton btn2 = new JButton("");
 		panel.add(btn2);
 		
 		JButton btn3 = new JButton("New button");
@@ -89,6 +89,7 @@ public class JOptionPaneEx extends JFrame implements ActionListener {
 		panel_1.add(btnNewButton_2);
 		
 		panel_2 = new JPanel();
+		panel_2.setBorder(new TitledBorder(null, "ShowMessageDialog", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		contentPane.add(panel_2);
 		panel_2.setLayout(new GridLayout(0, 3, 0, 0));
 		
