@@ -28,6 +28,7 @@ public class JComponentMain extends JFrame implements ActionListener {
 	private JButton btn9;
 	private JButton btn10;
 	private JButton btn11;
+	
 
 	/**
 	 * Launch the application.
